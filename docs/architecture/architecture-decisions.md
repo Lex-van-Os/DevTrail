@@ -1,0 +1,1 @@
+Architectural decisions and Architecture Decision Records (ADP) are work in progress
