@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="devtrail-api.Tests/devtrail-api.Tests.csproj" />
+  <Project Path="devtrail-api/devtrail-api.csproj" />
+</Solution>
