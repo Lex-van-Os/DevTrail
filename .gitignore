@@ -1,0 +1,11 @@
+# .NET
+bin/
+obj/
+
+# Rider / ReSharper (per-user, solution-scoped)
+.idea/.idea.*/
+/*/.idea/
+*.DotSettings.user
+
+# macOS
+.DS_Store
