@@ -7,7 +7,7 @@ This roadmap is phased so v1 is small enough to actually finish, with v2 buildin
 ## Tech stack
 
 - **API** — `devtrail-api`: ASP.NET Core Minimal API, Dockerized, deployed to Azure Container Apps.
-- **Sync worker** — new component (name TBD), Azure Functions (.NET isolated worker), Timer Trigger, nightly. Reads a GitHub PAT from Key Vault, calls GitHub via Octokit.NET (REST), writes to cached storage.
+- **Sync worker** — new `devtrail-sync-func-dev` component, Azure Functions (.NET isolated worker), Timer Trigger, nightly. Reads a GitHub PAT from Key Vault, calls GitHub via Octokit.NET (REST), writes to cached storage.
 - **Frontend** — `devtrail-web`: Next.js (App Router), Dockerized, deployed to Azure Container Apps.
 - **GitHub integration** — Octokit.NET (REST) for all v1 data; GraphQL against GitHub's API for `contributionsCollection` only, in v2 (REST has no equivalent for that data).
 - **Cached storage** — Azure Table Storage or Cosmos DB free tier (exact pick deferred to an ADR).
