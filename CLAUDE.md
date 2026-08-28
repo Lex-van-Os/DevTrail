@@ -51,6 +51,15 @@ For multi-step tasks, state a brief plan:
 
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
+## Architectural decisions
+DevTrail records significant decisions as ADRs. The index and the rules for what warrants one are in [`docs/architecture/architecture-decisions.md`](docs/architecture/architecture-decisions.md); the records live in [`docs/architecture/adr/`](docs/architecture/adr/).
+
+- Before proposing an architecturally-significant change (project structure, dependencies, hosting/deployment topology, cross-cutting qualities), read the index and any relevant ADR.
+- For a decision that warrants one, propose a new ADR (copy `adr/0000-madr-template.md`) — don't make the decision silently.
+- Standing constraints, already decided:
+  - Azure Functions use the **isolated worker model** — do not migrate `devtrail-sync` to in-process (ADR-0001).
+  - **.NET Aspire is intentionally not used** — do not add an AppHost/ServiceDefaults or `Aspire.*` packages (ADR-0002).
+
 ## Use source control best practices
 Make use of best practices when performing source control actions. Everything should be clear and concise.
 

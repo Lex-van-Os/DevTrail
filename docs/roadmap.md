@@ -27,7 +27,7 @@ The sync worker deliberately stays on Azure Functions rather than moving to a co
 - Local dev: Docker Compose covering the API + Azurite (Table Storage emulator) + the Next.js dev server.
 - Terraform skeleton: provider config + remote state backend (Azure Storage account for tfstate), no application resources yet.
 - GitHub Actions CI skeleton: build+test the API, build+test the Next.js app, `terraform fmt`/`validate` on every PR.
-- First real ADRs in [architecture-decisions.md](architecture-decisions.md): mixed hosting model (Functions for sync, Container Apps for API/Web), REST-first with GraphQL only where needed, Docker as the deployment unit for API/Web.
+- First real ADRs in [architecture/architecture-decisions.md](architecture/architecture-decisions.md): mixed hosting model (Functions for sync, Container Apps for API/Web), REST-first with GraphQL only where needed, Docker as the deployment unit for API/Web.
 
 ## Phase 1 — v1 MVP: live portfolio dashboard
 
