@@ -1,23 +1,15 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace devtrail_sync;
 
 public class DevTrailSync
 {
-    private readonly ILogger<DevTrailSync> _logger;
-
-    public DevTrailSync(ILogger<DevTrailSync> logger)
-    {
-        _logger = logger;
-    }
-
     [Function(nameof(DevTrailSync))]
-    public IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequest req)
+    public void Run([TimerTrigger("0 0 0 * * *")] TimerInfo timer, FunctionContext context)
     {
-        _logger.LogInformation("C# HTTP trigger function processed a request.");
-        return new OkObjectResult("Welcome to Azure Functions!");
+        ILogger logger = context.GetLogger(nameof(DevTrailSync));
+
+        logger.LogInformation("Timer executed");
     }
 }
