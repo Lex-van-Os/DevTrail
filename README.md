@@ -21,7 +21,9 @@ WIP
 WIP
 
 ## Common commands
-WIP
+```bash
+docker compose up    # run devtrail-api, Azurite, and devtrail-web together locally
+```
 
 ## Troubleshooting
 WIP

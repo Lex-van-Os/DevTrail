@@ -6,11 +6,12 @@ xUnit test project for [`devtrail-api`](../devtrail-api), using `WebApplicationF
 ## How it works
 - References `devtrail-api` directly and spins it up in-memory per test via `WebApplicationFactory<Program>`.
 - Current coverage:
-  - `HealthEndpointTests` — `GET /health` returns success.
+  - `HealthEndpointTests` — `GET /health` returns success (requires a reachable Azurite instance, since the endpoint now reads/writes Table Storage).
   - `WeatherForecastEndpointTests` — `GET /weatherforecast` returns success.
 
 ## Prerequisites
 - .NET 10 SDK
+- [Azurite](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite) running locally — `HealthEndpointTests` will fail without it
 
 ## Common commands
 ```bash

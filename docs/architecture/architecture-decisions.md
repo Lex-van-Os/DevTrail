@@ -27,6 +27,7 @@ format.
 | --- | --- | --- | --- |
 | [0001](adr/0001-use-dotnet-isolated-worker-model-for-azure-functions.md) | Use the .NET isolated worker model for Azure Functions | accepted | 2026-08-28 |
 | [0002](adr/0002-do-not-adopt-dotnet-aspire.md) | Do not adopt .NET Aspire | accepted | 2026-08-28 |
+| [0003](adr/0003-do-not-adopt-docker-hardened-images.md) | Do not adopt Docker Hardened Images | accepted | 2026-08-29 |
 
 ## Planned (from [`docs/roadmap.md`](../roadmap.md), not yet written)
 
