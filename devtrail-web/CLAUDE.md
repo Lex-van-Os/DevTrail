@@ -1,1 +1,3 @@
 # Additional code style and workflow for devtrail-web
+
+@AGENTS.md
