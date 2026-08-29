@@ -2,7 +2,6 @@
   "profiles": {
     "devtrail_sync": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7082",
       "launchBrowser": false
     }
   }
