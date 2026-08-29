@@ -35,19 +35,10 @@ Compose for local orchestration.
 
 Chosen option: **no Aspire**.
 
-> **TODO (Lex):** replace the bullets below with the actual findings from your research. The
-> points here are the expected drivers, not a record of what you concluded — this ADR isn't
-> final until this section reflects your reasoning.
-
-* Aspire adds an AppHost and a ServiceDefaults project plus a programming model to learn and
-  maintain, which is disproportionate for three services.
-* Aspire's deployment paths (`azd`, or Aspir8 for Kubernetes) don't match DevTrail's chosen
-  pipeline (Terraform-provisioned Container Apps + Function App via GitHub Actions); the Aspire
-  app model would sit alongside that rather than drive it.
-* The Next.js frontend and the Functions worker are only partly covered by Aspire's .NET-centric
-  orchestration, so a second local-dev mechanism (Docker Compose) is needed anyway.
-* Docker Compose + Azurite already covers the local-dev need (see Consequences) without a new
-  abstraction.
+* Frontend Next.js is only partially covered by Aspire orchestration, which means that a full fledged coverage cannot be guaranteed when using Aspire only.
+* Addoption of Aspire may take away possibilities to implement CI/CD with Terraform, which is a technology that the developer wants to get more familiar with through this project.
+* Immediate addoption of Aspire may add to project development time, which is undesirable, considering the smaller scale of the project at the moment.
+* Aspire adds two new projects (AppHost + ServiceDefaults) to the solution, which is disproportionate for three to four services.
 
 ### Consequences
 
