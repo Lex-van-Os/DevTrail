@@ -12,7 +12,7 @@
 - Tests live in the [`devtrail-api.Tests`](../devtrail-api.Tests) project, using `WebApplicationFactory<Program>` for in-process integration tests. May include unit tests in the future.
 
 ## Architecture
-See the root [README](../README.md#architecture) and [`docs/roadmap.md`](../docs/roadmap.md) for the wider system's architecture; formal ADRs live in [`docs/architecture/architecture-decisions.md`](../docs/architecture/architecture-decisions.md) (currently a work in progress).
+See the root [README](../README.md#architecture) and [`docs/roadmap.md`](../docs/roadmap.md) for the wider system's architecture; formal ADRs are indexed in [`docs/architecture/architecture-decisions.md`](../docs/architecture/architecture-decisions.md), with the records under [`docs/architecture/adr/`](../docs/architecture/adr/).
 
 ## Prerequisites
 - .NET 10 SDK

@@ -7,7 +7,7 @@ This roadmap is phased so v1 is small enough to actually finish, with v2 buildin
 ## Tech stack
 
 - **API** — `devtrail-api`: ASP.NET Core Minimal API, Dockerized, deployed to Azure Container Apps.
-- **Sync worker** — new component (name TBD), Azure Functions (.NET isolated worker), Timer Trigger, nightly. Reads a GitHub PAT from Key Vault, calls GitHub via Octokit.NET (REST), writes to cached storage.
+- **Sync worker** — new `devtrail-sync-func-dev` component, Azure Functions (.NET isolated worker), Timer Trigger, nightly. Reads a GitHub PAT from Key Vault, calls GitHub via Octokit.NET (REST), writes to cached storage.
 - **Frontend** — `devtrail-web`: Next.js (App Router), Dockerized, deployed to Azure Container Apps.
 - **GitHub integration** — Octokit.NET (REST) for all v1 data; GraphQL against GitHub's API for `contributionsCollection` only, in v2 (REST has no equivalent for that data).
 - **Cached storage** — Azure Table Storage or Cosmos DB free tier (exact pick deferred to an ADR).
@@ -27,7 +27,7 @@ The sync worker deliberately stays on Azure Functions rather than moving to a co
 - Local dev: Docker Compose covering the API + Azurite (Table Storage emulator) + the Next.js dev server.
 - Terraform skeleton: provider config + remote state backend (Azure Storage account for tfstate), no application resources yet.
 - GitHub Actions CI skeleton: build+test the API, build+test the Next.js app, `terraform fmt`/`validate` on every PR.
-- First real ADRs in [architecture-decisions.md](architecture-decisions.md): mixed hosting model (Functions for sync, Container Apps for API/Web), REST-first with GraphQL only where needed, Docker as the deployment unit for API/Web.
+- First real ADRs in [architecture/architecture-decisions.md](architecture/architecture-decisions.md): mixed hosting model (Functions for sync, Container Apps for API/Web), REST-first with GraphQL only where needed, Docker as the deployment unit for API/Web.
 
 ## Phase 1 — v1 MVP: live portfolio dashboard
 

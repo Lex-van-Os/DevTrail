@@ -51,7 +51,16 @@ For multi-step tasks, state a brief plan:
 
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
-## Use source control best practices
+### Architectural decisions
+DevTrail records significant decisions as ADRs. The index and the rules for what warrants one are in [`docs/architecture/architecture-decisions.md`](docs/architecture/architecture-decisions.md); the records live in [`docs/architecture/adr/`](docs/architecture/adr/).
+
+- Before proposing an architecturally-significant change (project structure, dependencies, hosting/deployment topology, cross-cutting qualities), read the index and any relevant ADR.
+- For a decision that warrants one, propose a new ADR (copy `adr/0000-madr-template.md`) — don't make the decision silently.
+- Standing constraints, already decided:
+  - Azure Functions use the **isolated worker model** — do not migrate `devtrail-sync` to in-process (ADR-0001).
+  - **.NET Aspire is intentionally not used** — do not add an AppHost/ServiceDefaults or `Aspire.*` packages (ADR-0002).
+
+### Use source control best practices
 Make use of best practices when performing source control actions. Everything should be clear and concise.
 
 When using source control:
@@ -59,5 +68,8 @@ When using source control:
 - Make use of the Conventional Commits specification.
 - When creating a pull request, make use of the pull request template that is found in the .github folder.
 - Link the created pull request to the GitHub issue, and populate the pull request with a fitting fixes or closing statement.
+
+### Project specific instructions
+For project specific instructions, consult the CLAUDE.md file that resides in the separate DevTrail projects.
 ---
 These guidelines are working if: fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.

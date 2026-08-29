@@ -12,7 +12,7 @@ DevTrail is a public dashboard that displays your GitHub projects — descriptio
 5. Everything is provisioned with Terraform and deployed through GitHub Actions to Azure, with Application Insights for monitoring.
 
 ## Architecture
-Key architectural decisions for DevTrail's stack are recorded in [docs/architecture-decisions.md](docs/architecture-decisions.md).
+Key architectural decisions for DevTrail's stack are recorded as ADRs under [docs/architecture/](docs/architecture/architecture-decisions.md).
 
 ## Prerequisites
 WIP

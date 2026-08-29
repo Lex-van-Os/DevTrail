@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "devtrail_sync": {
+      "commandName": "Project",
+      "launchBrowser": false
+    }
+  }
+}
