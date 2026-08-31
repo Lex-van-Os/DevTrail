@@ -11,7 +11,7 @@
 - Application Insights/OpenTelemetry is wired in [`Program.cs`](Program.cs), active only when `APPLICATIONINSIGHTS_CONNECTION_STRING` is set.
 
 ## Architecture
-See the root [README](../README.md#architecture) and [`docs/roadmap.md`](../docs/roadmap.md) for the wider system's architecture; formal ADRs are indexed in [`docs/architecture/architecture-decisions.md`](../docs/architecture/architecture-decisions.md), with the records under [`docs/architecture/adr/`](../docs/architecture/adr/). The isolated worker model ([ADR-0001](../docs/architecture/adr/0001-use-dotnet-isolated-worker-model-for-azure-functions.md)) and the Azurite-based local dev setup ([ADR-0002](../docs/architecture/adr/0002-do-not-adopt-dotnet-aspire.md)) are the ones that touch this project.
+See the root [README](../README.md#architecture) and [`docs/roadmap.md`](../docs/roadmap.md) for the wider system's architecture; formal ADRs are indexed in [`docs/architecture/architecture-decisions.md`](../docs/architecture/architecture-decisions.md), with the records under [`docs/architecture/adr/`](../docs/architecture/adr/). The isolated worker model ([ADR-0001](../docs/architecture/adr/0001-use-dotnet-isolated-worker-model-for-azure-functions.md)) is the one that touches this project; the Azurite-based local dev setup is a development/tooling decision (see this README's own Prerequisites), not an ADR.
 
 ## Prerequisites
 - .NET 10 SDK

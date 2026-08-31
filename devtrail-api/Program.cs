@@ -1,8 +1,13 @@
+using Azure.Data.Tables;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddSingleton(_ =>
+    new TableServiceClient(builder.Configuration.GetConnectionString("TableStorage")));
 
 var app = builder.Build();
 
@@ -33,8 +38,21 @@ app.MapGet("/weatherforecast", () =>
     })
     .WithName("GetWeatherForecast");
 
-app.MapGet("/health", () => Results.Ok())
-    .WithName("GetHeath");
+app.MapGet("/health", async (TableServiceClient tableServiceClient) =>
+    {
+        var table = tableServiceClient.GetTableClient("healthcheck");
+        await table.CreateIfNotExistsAsync();
+
+        var entity = new TableEntity("health", Guid.NewGuid().ToString())
+        {
+            ["checkedAt"] = DateTimeOffset.UtcNow
+        };
+        await table.AddEntityAsync(entity);
+        await table.GetEntityAsync<TableEntity>(entity.PartitionKey, entity.RowKey);
+
+        return Results.Ok();
+    })
+    .WithName("GetHealth");
 
 app.Run();
 

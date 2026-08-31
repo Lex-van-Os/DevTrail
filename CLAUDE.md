@@ -60,6 +60,7 @@ DevTrail records significant decisions as ADRs. The index and the rules for what
 - Standing constraints, already decided:
   - Azure Functions use the **isolated worker model** — do not migrate `devtrail-sync` to in-process (ADR-0001).
   - **.NET Aspire is intentionally not used** — do not add an AppHost/ServiceDefaults or `Aspire.*` packages (ADR-0002).
+  - **Docker Hardened Images are intentionally not used** — build the API and web images on Docker Official / vendor images (ADR-0003).
 
 ### Use source control best practices
 Make use of best practices when performing source control actions. Everything should be clear and concise.

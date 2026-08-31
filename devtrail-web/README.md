@@ -11,7 +11,7 @@
   - `/welcome` — a placeholder page.
 
 ## Architecture
-See the root [README](../README.md#architecture) and [`docs/roadmap.md`](../docs/roadmap.md) for the wider system's architecture; formal ADRs are indexed in [`docs/architecture/architecture-decisions.md`](../docs/architecture/architecture-decisions.md), with the records under [`docs/architecture/adr/`](../docs/architecture/adr/).
+See the root [README](../README.md#architecture) and [`docs/roadmap.md`](../docs/roadmap.md) for the wider system's architecture; formal ADRs are indexed in [`docs/architecture/architecture-decisions.md`](../docs/architecture/architecture-decisions.md), with the records under [`docs/architecture/adr/`](../docs/architecture/adr/). This project's container image is built on Docker Official / vendor images, not Docker Hardened Images ([ADR-0003](../docs/architecture/adr/0003-do-not-adopt-docker-hardened-images.md)).
 
 ## Prerequisites
 - Node.js
@@ -28,6 +28,7 @@ pnpm dev      # run the dev server (http://localhost:3000)
 pnpm build    # production build
 pnpm start    # run the production build
 pnpm lint     # run ESLint
+docker compose up devtrail-web devtrail-api azurite   # run in Docker instead (from repo root)
 ```
 
 ## Troubleshooting
