@@ -1,0 +1,1 @@
+// WIP: Will contain definitions once Azure Storage resource(s) are defined through the Terraform main.tf file
