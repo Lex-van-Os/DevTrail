@@ -13,8 +13,8 @@ Terraform needs a remote backend to store its state file, so it isn't kept only 
 ## Decision Drivers
 
 * Project scale — DevTrail is a personal portfolio/hobby project (see [ADR-0003](0003-do-not-adopt-docker-hardened-images.md)), not a team project; HCP Terraform's collaboration features (remote plan/apply, policy-as-code, team access controls) solve problems this project doesn't have.
-* Consolidation — every other piece of DevTrail already lives on Azure (Container Apps, Functions, Key Vault, Storage). Adding HCP Terraform introduces a second external account/service, and a second place secrets and access need managing, for no functional gain here.
-* Cost — Azure Storage for a single small state file costs fractions of a cent per month, comfortably inside the project's free-tier budget; HCP Terraform's free tier would also work, but at the cost of the consolidation driver above.
+* Consolidation — every other piece of DevTrail already lives on Azure (Container Apps, Functions, Key Vault, Storage). Adding HCP Terraform introduces a second external account/service, and a second place for managing secrets and access.
+* Cost — Azure Storage for a single small state file has very small costs per month, comfortably inside the project's free-tier budget; HCP Terraform's free tier would also work, but at the cost of the consolidation driver above.
 
 ## Considered Options
 
@@ -28,7 +28,7 @@ Chosen option: **Azure Storage (`azurerm` backend)**, because it keeps state ins
 ### Consequences
 
 * Good, because there's one fewer external service/account in the project's supply chain — no separate HCP Terraform organization, no separate token to manage or rotate.
-* Good, because state lives alongside the rest of DevTrail's Azure footprint, in a resource group (`rg-devtrail-tfstate`) that is deliberately *not* itself Terraform-managed, avoiding the bootstrapping problem of a backend managing its own storage.
+* Good, because state lives alongside the rest of DevTrail's Azure footprint, in a resource group (`rg-devtrail-tfstate`) that is deliberately *not* Terraform-managed, avoiding the bootstrapping problem of a backend managing its own storage.
 * Bad, because the `azurerm` backend has no built-in remote plan/apply, run history UI, or policy-as-code — if DevTrail ever grows a second contributor or needs enforced review gates on `apply`, HCP Terraform's collaboration model would need revisiting.
 * Neutral, because migrating between backend types later is possible but not free — confirmed firsthand during setup: switching away from an initial, accidentally-scaffolded HCP Terraform `cloud {}` block required clearing local Terraform metadata and reinitializing, since Terraform has no automated migration path between backend types.
 
