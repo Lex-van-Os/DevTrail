@@ -105,5 +105,8 @@ USER node
 # Expose port 3000 to allow HTTP traffic
 EXPOSE 3000
 
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s \
+    CMD bash -c 'exec 3<>/dev/tcp/localhost/3000 && printf "GET / HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n" >&3 && head -n 1 <&3 | grep -q "200"'
+
 # Start Next.js standalone server
 CMD ["node", "server.js"]

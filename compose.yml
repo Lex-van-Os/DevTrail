@@ -35,7 +35,8 @@ services:
       # API calls.
       NEXT_PUBLIC_API_URL: "http://devtrail-api:8080"
     depends_on:
-      - devtrail-api
+      devtrail-api:
+        condition: service_healthy
 
 volumes:
   azurite-data:
