@@ -52,6 +52,7 @@ jobs:
       - uses: pnpm/setup@v2
         with:
           package-json-file: devtrail-web/package.json
+          install: false
 
       - uses: actions/setup-node@v7
         with:
