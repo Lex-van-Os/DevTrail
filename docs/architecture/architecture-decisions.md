@@ -31,8 +31,8 @@ format.
 | [0004](adr/0004-use-azure-storage-for-terraform-remote-state.md) | Use Azure Storage for Terraform Remote State | accepted | 2026-08-31 |
 | [0005](adr/0005-use-mixed-hosting-model.md) | Use a Mixed Hosting Model for Compute | accepted | 2026-09-02 |
 | [0006](adr/0006-rest-first-github-api-consumption.md) | Use REST for GitHub API Consumption, GraphQL Only for contributionsCollection | accepted | 2026-09-03 |
+| [0007](adr/0007-docker-as-deployment-unit-for-api-and-web.md) | Use Docker Images as the Deployment Unit for the API and Web | accepted | 2026-09-03 |
 
 ## Planned (from [`docs/roadmap.md`](../roadmap.md), not yet written)
 
-- Docker as the deployment unit for the API and web.
 - Cached storage pick — Azure Table Storage vs. Cosmos DB free tier.

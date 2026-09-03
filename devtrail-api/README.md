@@ -13,7 +13,7 @@
 - Every PR builds and runs these tests via [GitHub Actions](../.github/workflows/ci.yml), with an Azurite service container standing in for Table Storage.
 
 ## Architecture
-See the root [README](../README.md#architecture) and [`docs/roadmap.md`](../docs/roadmap.md) for the wider system's architecture; formal ADRs are indexed in [`docs/architecture/architecture-decisions.md`](../docs/architecture/architecture-decisions.md), with the records under [`docs/architecture/adr/`](../docs/architecture/adr/). This project's container image is built on Docker Official / vendor images, not Docker Hardened Images ([ADR-0003](../docs/architecture/adr/0003-do-not-adopt-docker-hardened-images.md)).
+See the root [README](../README.md#architecture) and [`docs/roadmap.md`](../docs/roadmap.md) for the wider system's architecture; formal ADRs are indexed in [`docs/architecture/architecture-decisions.md`](../docs/architecture/architecture-decisions.md), with the records under [`docs/architecture/adr/`](../docs/architecture/adr/). This project is planned to be deployed as a Docker image to Azure Container Apps ([ADR-0007](../docs/architecture/adr/0007-docker-as-deployment-unit-for-api-and-web.md)), built on Docker Official / vendor images rather than Docker Hardened Images ([ADR-0003](../docs/architecture/adr/0003-do-not-adopt-docker-hardened-images.md)).
 
 ## Prerequisites
 - .NET 10 SDK
