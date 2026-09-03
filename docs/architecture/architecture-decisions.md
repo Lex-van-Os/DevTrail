@@ -30,9 +30,9 @@ format.
 | [0003](adr/0003-do-not-adopt-docker-hardened-images.md) | Do not adopt Docker Hardened Images | accepted | 2026-08-29 |
 | [0004](adr/0004-use-azure-storage-for-terraform-remote-state.md) | Use Azure Storage for Terraform Remote State | accepted | 2026-08-31 |
 | [0005](adr/0005-use-mixed-hosting-model.md) | Use a Mixed Hosting Model for Compute | accepted | 2026-09-02 |
+| [0006](adr/0006-rest-first-github-api-consumption.md) | Use REST for GitHub API Consumption, GraphQL Only for contributionsCollection | accepted | 2026-09-03 |
 
 ## Planned (from [`docs/roadmap.md`](../roadmap.md), not yet written)
 
-- REST-first via Octokit.NET, GraphQL only where REST has no equivalent (`contributionsCollection`).
 - Docker as the deployment unit for the API and web.
 - Cached storage pick — Azure Table Storage vs. Cosmos DB free tier.
