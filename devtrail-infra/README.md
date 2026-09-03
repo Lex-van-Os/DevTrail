@@ -7,6 +7,7 @@
 - `azurerm` provider, with remote state stored in Azure Storage rather than HCP Terraform — see [ADR-0004](../docs/architecture/adr/0004-use-azure-storage-for-terraform-remote-state.md).
 - The state-holding resource group, storage account, and container (`rg-devtrail-tfstate` / `stdevtrailtfstate` / `tfstate`, North Europe) were created manually via the Azure CLI, not by this Terraform config — Terraform can't manage the backend it depends on to run.
 - `main.tf` currently only holds provider and backend configuration. `variables.tf`, `outputs.tf`, and `providers.tf` are placeholders for when real resources are added.
+- Every PR runs `terraform fmt -check` and `terraform validate` via [GitHub Actions](../.github/workflows/ci.yml), using `terraform init -backend=false` — no Azure credentials are needed for this check.
 
 ## Architecture
 See the root [README](../README.md#architecture) and [`docs/roadmap.md`](../docs/roadmap.md) for the wider system's architecture; formal ADRs are indexed in [`docs/architecture/architecture-decisions.md`](../docs/architecture/architecture-decisions.md), with the records under [`docs/architecture/adr/`](../docs/architecture/adr/). [ADR-0004](../docs/architecture/adr/0004-use-azure-storage-for-terraform-remote-state.md) covers this project's remote state choice specifically.
@@ -22,9 +23,11 @@ terraform init
 
 ## Common commands
 ```bash
-terraform plan     # preview changes
-terraform apply     # apply changes
-terraform fmt       # format .tf files
+terraform plan             # preview changes
+terraform apply            # apply changes
+terraform fmt               # format .tf files
+terraform fmt -check        # check formatting without changing files (what CI runs)
+terraform validate          # check config validity (what CI runs)
 ```
 
 ## Troubleshooting
