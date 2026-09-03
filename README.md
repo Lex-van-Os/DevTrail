@@ -9,7 +9,7 @@ DevTrail is a public dashboard that displays your GitHub projects — descriptio
 2. **Cached storage** — the synced results (description, language breakdown, activity, per-language counts) are written to Azure Table Storage/Cosmos DB, so pageviews never trigger a live GitHub call.
 3. **API layer** — `devtrail-api`, an ASP.NET Core Minimal API, serves the cached data to the front-end.
 4. **Front-end** — `devtrail-web` renders the dashboard for visitors, publicly accessible with no login required.
-5. Everything is provisioned with Terraform and deployed through GitHub Actions to Azure, with Application Insights for monitoring.
+5. Everything is provisioned with Terraform and deployed through GitHub Actions to Azure, with Application Insights for monitoring. [CI](.github/workflows/ci.yml) already runs on every PR (build+test the API, build+lint the web app, fmt+validate the Terraform config); the deploy side of that pipeline doesn't exist yet.
 
 ## Architecture
 Key architectural decisions for DevTrail's stack are recorded as ADRs under [docs/architecture/](docs/architecture/architecture-decisions.md).

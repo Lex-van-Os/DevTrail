@@ -1,3 +1,5 @@
+#
+
 # Code style and workflow
 
 ### Think Before Coding
@@ -9,7 +11,10 @@ Before implementing code:
 - If multiple interpretations exist, present them - don't pick silently.
 - If a simpler approach exists, say so. Push back when warranted.
 - If something is unclear, stop. Name what's confusing. Ask.
+- Refer to the documentation of the technologies that you work with when given a task.
+- Verify that you've got the most up-to-date context on a specific technology that you work with, by consulting the documentation.
 - Refer to the documentation when working with a specific framework / technology. Adher to the mentioned best practice.
+- Refer to the documentation of the DevTrail project to properly understand the project context and workflow.
 
 ### Simplicity First
 Minimum code that solves the problem. Nothing extra that is speculative.
@@ -24,7 +29,6 @@ Minimum code that solves the problem. Nothing extra that is speculative.
 
 ### Surgical Changes
 Touch only what you must. Clean up only your own mess.
-
 
 When editing existing code:
 - Don't "improve" adjacent code, comments, or formatting.
@@ -57,13 +61,15 @@ DevTrail records significant decisions as ADRs. The index and the rules for what
 
 - Before proposing an architecturally-significant change (project structure, dependencies, hosting/deployment topology, cross-cutting qualities), read the index and any relevant ADR.
 - For a decision that warrants one, propose a new ADR (copy `adr/0000-madr-template.md`) — don't make the decision silently.
-- Standing constraints, already decided:
-  - Azure Functions use the **isolated worker model** — do not migrate `devtrail-sync` to in-process (ADR-0001).
-  - **.NET Aspire is intentionally not used** — do not add an AppHost/ServiceDefaults or `Aspire.*` packages (ADR-0002).
-  - **Docker Hardened Images are intentionally not used** — build the API and web images on Docker Official / vendor images (ADR-0003).
+- Already defined constraints can be found in the `docs/architecture/adr/` folder.
 
-### Use source control best practices
-Make use of best practices when performing source control actions. Everything should be clear and concise.
+### Completing work
+Make use of best practices regarding finishing work and source control actions when you finish work. Everything should be clear and concise.
+
+Before committing code:
+- Before committing and pushing code: Verify that no new issues arise and execute the necessary CI commands to verify the correctness of implemented code.
+- After creating a pull request: Verify that the CI script passes, and fix any recurring problems before completing a task in the case that CI scripts fail.
+- Check if any changes have to be made to project documentation. README.md files should serve to make the context of projects understandable to both humans and agents.
 
 When using source control:
 - Don't just blindly commit changes. Commit when you have a coherent, reviewable unit of work.
@@ -75,3 +81,8 @@ When using source control:
 For project specific instructions, consult the CLAUDE.md file that resides in the separate DevTrail projects.
 ---
 These guidelines are working if: fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+
+#### Credits
+This CLAUDE.md file structure is based and expanded on the Karpathy-inspired CLAUDE.md file as defined by `forrestchang`.
+
+[The original CLAUDE.md file](https://github.com/multica-ai/andrej-karpathy-skills/blob/main/CLAUDE.md)
