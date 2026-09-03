@@ -63,18 +63,19 @@ DevTrail records significant decisions as ADRs. The index and the rules for what
 - For a decision that warrants one, propose a new ADR (copy `adr/0000-madr-template.md`) — don't make the decision silently.
 - Already defined constraints can be found in the `docs/architecture/adr/` folder.
 
-### Source control and CI/CD
-Make use of best practices when performing source control actions. Everything should be clear and concise.
+### Completing work
+Make use of best practices regarding finishing work and source control actions when you finish work. Everything should be clear and concise.
+
+Before committing code:
+- Before committing and pushing code: Verify that no new issues arise and execute the necessary CI commands to verify the correctness of implemented code.
+- After creating a pull request: Verify that the CI script passes, and fix any recurring problems before completing a task in the case that CI scripts fail.
+- Check if any changes have to be made to project documentation. README.md files should serve to make the context of projects understandable to both humans and agents.
 
 When using source control:
 - Don't just blindly commit changes. Commit when you have a coherent, reviewable unit of work.
 - Make use of the Conventional Commits specification.
 - When creating a pull request, make use of the pull request template that is found in the .github folder.
 - Link the created pull request to the GitHub issue, and populate the pull request with a fitting fixes or closing statement.
-
-Before committing code:
-- Before committing and pushing code: Verify that no new issues arise and execute the necessary CI commands to verify the correctness of implemented code.
-- After creating a pull request: Verify that the CI script passes, and fix any recurring problems before completing a task in the case that CI scripts fail.
 
 ### Project specific instructions
 For project specific instructions, consult the CLAUDE.md file that resides in the separate DevTrail projects.
