@@ -27,6 +27,11 @@ Minimum code that solves the problem. Nothing extra that is speculative.
 - Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
 - Make use of the KISS principle.
 
+### Required conventions
+Make use of the following required conventions whjen implementing code:
+
+- No one letter variables. Prefer writing out variable names, instead of shorthands (i.e.: ex -> exception).
+
 ### Surgical Changes
 Touch only what you must. Clean up only your own mess.
 

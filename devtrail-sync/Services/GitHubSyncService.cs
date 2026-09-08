@@ -39,4 +39,27 @@ public class GitHubSyncService : IGitHubSyncService
             LastCommitDate = lastCommitDate
         };
     }
+
+    public async Task<List<SolvedChallengesSnapshot>> GetSolvedChallengesSnapshotAsync(string owner,
+        string repositoryName)
+    {
+        IReadOnlyList<RepositoryContent> rootContents =
+            await _client.Repository.Content.GetAllContents(owner, repositoryName);
+
+        List<SolvedChallengesSnapshot> snapshots = [];
+
+        foreach (RepositoryContent languageFolder in rootContents.Where(content => content.Type == ContentType.Dir))
+        {
+            IReadOnlyList<RepositoryContent> challengeFolders =
+                await _client.Repository.Content.GetAllContents(owner, repositoryName, languageFolder.Path);
+
+            snapshots.Add(new SolvedChallengesSnapshot
+            {
+                Language = languageFolder.Name,
+                SolvedChallenges = challengeFolders.Count(content => content.Type == ContentType.Dir)
+            });
+        }
+
+        return snapshots;
+    }
 }
