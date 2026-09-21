@@ -28,5 +28,6 @@ builder.Services.AddSingleton(_ => new GitHubClient(new ProductHeaderValue("DevT
 builder.Services.AddScoped<IGitHubSyncService, GitHubSyncService>();
 builder.Services.AddScoped<ITableStorageService, TableStorageService>();
 builder.Services.AddScoped<IRepositoryMapper, RepositoryMapper>();
+builder.Services.AddScoped<ISolvedChallengeMapper, SolvedChallengeMapper>();
 
 builder.Build().Run();

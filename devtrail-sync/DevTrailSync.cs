@@ -19,14 +19,17 @@ public class DevTrailSync
     private readonly IGitHubSyncService _gitHubSyncService;
     private readonly ILogger<DevTrailSync> _logger;
     private readonly IRepositoryMapper _repositoryMapper;
+    private readonly ISolvedChallengeMapper _solvedChallengeMapper;
     private readonly ITableStorageService _tableStorageService;
 
     public DevTrailSync(IGitHubSyncService gitHubSyncService, ITableStorageService tableStorageService,
-        IRepositoryMapper repositoryMapper, ILogger<DevTrailSync> logger)
+        IRepositoryMapper repositoryMapper, ISolvedChallengeMapper solvedChallengeMapper,
+        ILogger<DevTrailSync> logger)
     {
         _gitHubSyncService = gitHubSyncService;
         _tableStorageService = tableStorageService;
         _repositoryMapper = repositoryMapper;
+        _solvedChallengeMapper = solvedChallengeMapper;
         _logger = logger;
     }
 
@@ -67,6 +70,9 @@ public class DevTrailSync
                         _logger.LogInformation("{Language} solved challenges: {SolvedChallenges}",
                             snapshot.Language,
                             snapshot.SolvedChallenges);
+
+                        SolvedChallengeEntity solvedChallengeEntity = _solvedChallengeMapper.Map(snapshot, name);
+                        await _tableStorageService.UpsertSolvedChallengeData(solvedChallengeEntity);
                     }
                 }
             }

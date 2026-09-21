@@ -8,4 +8,9 @@ public class TableStorageService : ITableStorageService
     {
         return 1;
     }
+
+    public async Task<int> UpsertSolvedChallengeData(SolvedChallengeEntity solvedChallengeEntity)
+    {
+        return 1;
+    }
 }
