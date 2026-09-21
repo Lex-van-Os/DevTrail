@@ -1,12 +1,14 @@
 # DevTrail Sync
 
 ## What it is
-`devtrail-sync` is an Azure Functions (.NET isolated worker) project. Per the project's [roadmap](../docs/roadmap.md), it's intended to run the nightly GitHub sync job, but no sync logic exists yet — see [How it works](#how-it-works) for what's actually implemented today.
+`devtrail-sync` is an Azure Functions (.NET isolated worker) project. Per the project's [roadmap](../docs/roadmap.md), it runs the nightly GitHub sync job: fetching repository metadata and per-language challenge counts, and persisting them to Azure Table Storage for `devtrail-api` to serve.
 
 ## How it works
 - Isolated worker model (not in-process), targeting **.NET 10**, on Azure Functions v4.
-- Currently contains a single stub function:
-  - `DevTrailSync` — a Timer Trigger (`0 0 0 * * *`, daily at midnight) that logs a message. No sync logic yet.
+- `DevTrailSync` — a Timer Trigger (`0 0 0 * * *`, daily at midnight). For each tracked repository (`Steward`, `code-challenges`):
+  - Fetches description, language breakdown, and last-commit date via `GitHubSyncService` (Octokit.NET); for `code-challenges` specifically, also fetches per-language solved-challenge counts via the GitHub Contents API.
+  - Maps the fetched data onto Table Storage entities (`RepositoryMapper`, `SolvedChallengeMapper`) and upserts them via `TableStorageService` into the `Repositories` and `SolvedChallenges` tables, replacing each repo's previous data rather than duplicating it.
+  - A failure syncing one repository is logged and doesn't stop the others from being processed.
 - Hosting target: Azure Functions **Flex Consumption** plan.
 - Application Insights/OpenTelemetry is wired in [`Program.cs`](Program.cs), active only when `APPLICATIONINSIGHTS_CONNECTION_STRING` is set.
 
@@ -16,7 +18,7 @@ See the root [README](../README.md#architecture) and [`docs/roadmap.md`](../docs
 ## Prerequisites
 - .NET 10 SDK
 - [Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local) v4
-- [Azurite](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite) running locally — the Timer trigger's listener needs a working `AzureWebJobsStorage` connection to start, even before any sync logic is added
+- [Azurite](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite) running locally — the Timer trigger's listener needs a working `AzureWebJobsStorage` connection to start, and the sync itself writes to Azurite's Table Storage emulation (`ConnectionStrings:TableStorage` in `local.settings.json`)
 
 ## Install
 ```bash
