@@ -1,5 +1,6 @@
 using Azure.Monitor.OpenTelemetry.Exporter;
 
+using devtrail_sync.Mappers;
 using devtrail_sync.Services;
 
 using Microsoft.Azure.Functions.Worker.Builder;
@@ -26,5 +27,6 @@ builder.Services.AddSingleton(_ => new GitHubClient(new ProductHeaderValue("DevT
 });
 builder.Services.AddScoped<IGitHubSyncService, GitHubSyncService>();
 builder.Services.AddScoped<ITableStorageService, TableStorageService>();
+builder.Services.AddScoped<IRepositoryMapper, RepositoryMapper>();
 
 builder.Build().Run();

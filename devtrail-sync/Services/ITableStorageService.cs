@@ -1,8 +1,8 @@
-using devtrail_sync.Models.GitHub;
+using devtrail_sync.Models.TableEntities;
 
 namespace devtrail_sync.Services;
 
 public interface ITableStorageService
 {
-    Task<int> UpsertRepositoryData(RepositorySnapshot repositorySnapshot);
+    Task<int> UpsertRepositoryData(RepositoryEntity repositoryEntity);
 }

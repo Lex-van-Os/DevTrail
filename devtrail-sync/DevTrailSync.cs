@@ -1,4 +1,6 @@
+using devtrail_sync.Mappers;
 using devtrail_sync.Models.GitHub;
+using devtrail_sync.Models.TableEntities;
 using devtrail_sync.Services;
 
 using Microsoft.Azure.Functions.Worker;
@@ -16,13 +18,15 @@ public class DevTrailSync
 
     private readonly IGitHubSyncService _gitHubSyncService;
     private readonly ILogger<DevTrailSync> _logger;
+    private readonly IRepositoryMapper _repositoryMapper;
     private readonly ITableStorageService _tableStorageService;
 
     public DevTrailSync(IGitHubSyncService gitHubSyncService, ITableStorageService tableStorageService,
-        ILogger<DevTrailSync> logger)
+        IRepositoryMapper repositoryMapper, ILogger<DevTrailSync> logger)
     {
         _gitHubSyncService = gitHubSyncService;
         _tableStorageService = tableStorageService;
+        _repositoryMapper = repositoryMapper;
         _logger = logger;
     }
 
@@ -44,6 +48,9 @@ public class DevTrailSync
                     string.Join(", ", repositorySnapshot.Languages));
                 _logger.LogInformation("{Repo} last commit: {LastCommitDate}", repositorySnapshot.Name,
                     repositorySnapshot.LastCommitDate);
+
+                RepositoryEntity repositoryEntity = _repositoryMapper.Map(repositorySnapshot);
+                await _tableStorageService.UpsertRepositoryData(repositoryEntity);
 
                 if (name == "code-challenges")
                 {
