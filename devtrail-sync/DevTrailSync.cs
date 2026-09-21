@@ -1,4 +1,6 @@
-using devtrail_sync.Models;
+using devtrail_sync.Mappers;
+using devtrail_sync.Models.GitHub;
+using devtrail_sync.Models.TableEntities;
 using devtrail_sync.Services;
 
 using Microsoft.Azure.Functions.Worker;
@@ -16,10 +18,18 @@ public class DevTrailSync
 
     private readonly IGitHubSyncService _gitHubSyncService;
     private readonly ILogger<DevTrailSync> _logger;
+    private readonly IRepositoryMapper _repositoryMapper;
+    private readonly ISolvedChallengeMapper _solvedChallengeMapper;
+    private readonly ITableStorageService _tableStorageService;
 
-    public DevTrailSync(IGitHubSyncService gitHubSyncService, ILogger<DevTrailSync> logger)
+    public DevTrailSync(IGitHubSyncService gitHubSyncService, ITableStorageService tableStorageService,
+        IRepositoryMapper repositoryMapper, ISolvedChallengeMapper solvedChallengeMapper,
+        ILogger<DevTrailSync> logger)
     {
         _gitHubSyncService = gitHubSyncService;
+        _tableStorageService = tableStorageService;
+        _repositoryMapper = repositoryMapper;
+        _solvedChallengeMapper = solvedChallengeMapper;
         _logger = logger;
     }
 
@@ -35,28 +45,18 @@ public class DevTrailSync
                 RepositorySnapshot repositorySnapshot =
                     await _gitHubSyncService.GetRepositorySnapshotAsync(owner, name);
 
-                _logger.LogInformation("{Repo} description: {Description}", repositorySnapshot.Name,
-                    repositorySnapshot.Description);
-                _logger.LogInformation("{Repo} languages: {Languages}", repositorySnapshot.Name,
-                    string.Join(", ", repositorySnapshot.Languages));
-                _logger.LogInformation("{Repo} last commit: {LastCommitDate}", repositorySnapshot.Name,
-                    repositorySnapshot.LastCommitDate);
+                RepositoryEntity repositoryEntity = _repositoryMapper.Map(repositorySnapshot);
+                await _tableStorageService.UpsertRepositoryData(repositoryEntity);
 
                 if (name == "code-challenges")
                 {
                     List<SolvedChallengesSnapshot> solvedChallengesSnapshots =
                         await _gitHubSyncService.GetSolvedChallengesSnapshotAsync(owner, name);
 
-                    _logger.LogInformation("{Repo} solved challenges:", repositorySnapshot.Name);
-
                     foreach (SolvedChallengesSnapshot snapshot in solvedChallengesSnapshots)
                     {
-                        _logger.LogInformation("{Repo} language: {Language}", repositorySnapshot.Name,
-                            snapshot.Language);
-
-                        _logger.LogInformation("{Language} solved challenges: {SolvedChallenges}",
-                            snapshot.Language,
-                            snapshot.SolvedChallenges);
+                        SolvedChallengeEntity solvedChallengeEntity = _solvedChallengeMapper.Map(snapshot, name);
+                        await _tableStorageService.UpsertSolvedChallengeData(solvedChallengeEntity);
                     }
                 }
             }

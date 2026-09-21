@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace devtrail_sync.Models;
+namespace devtrail_sync.Models.GitHub;
 
 public class RepositorySnapshot
 {

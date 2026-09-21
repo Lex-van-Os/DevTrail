@@ -1,4 +1,4 @@
-using devtrail_sync.Models;
+using devtrail_sync.Models.GitHub;
 
 namespace devtrail_sync.Services;
 
