@@ -16,10 +16,13 @@ public class DevTrailSync
 
     private readonly IGitHubSyncService _gitHubSyncService;
     private readonly ILogger<DevTrailSync> _logger;
+    private readonly ITableStorageService _tableStorageService;
 
-    public DevTrailSync(IGitHubSyncService gitHubSyncService, ILogger<DevTrailSync> logger)
+    public DevTrailSync(IGitHubSyncService gitHubSyncService, ITableStorageService tableStorageService,
+        ILogger<DevTrailSync> logger)
     {
         _gitHubSyncService = gitHubSyncService;
+        _tableStorageService = tableStorageService;
         _logger = logger;
     }
 

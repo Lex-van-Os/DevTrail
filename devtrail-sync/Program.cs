@@ -25,5 +25,6 @@ builder.Services.AddSingleton(_ => new GitHubClient(new ProductHeaderValue("DevT
     Credentials = new Credentials(builder.Configuration["Github:PAT"])
 });
 builder.Services.AddScoped<IGitHubSyncService, GitHubSyncService>();
+builder.Services.AddScoped<ITableStorageService, TableStorageService>();
 
 builder.Build().Run();
