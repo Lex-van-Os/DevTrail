@@ -1,16 +1,31 @@
+using Azure.Data.Tables;
+
 using devtrail_sync.Models.TableEntities;
 
 namespace devtrail_sync.Services;
 
 public class TableStorageService : ITableStorageService
 {
-    public async Task<int> UpsertRepositoryData(RepositoryEntity repositoryEntity)
+    private readonly TableServiceClient _tableServiceClient;
+
+    public TableStorageService(TableServiceClient tableServiceClient)
     {
-        return 1;
+        _tableServiceClient = tableServiceClient;
     }
 
-    public async Task<int> UpsertSolvedChallengeData(SolvedChallengeEntity solvedChallengeEntity)
+    public async Task UpsertRepositoryData(RepositoryEntity repositoryEntity)
     {
-        return 1;
+        TableClient table = _tableServiceClient.GetTableClient("Repositories");
+        await table.CreateIfNotExistsAsync();
+
+        await table.UpsertEntityAsync(repositoryEntity, TableUpdateMode.Replace);
+    }
+
+    public async Task UpsertSolvedChallengeData(SolvedChallengeEntity solvedChallengeEntity)
+    {
+        TableClient table = _tableServiceClient.GetTableClient("SolvedChallenges");
+        await table.CreateIfNotExistsAsync();
+
+        await table.UpsertEntityAsync(solvedChallengeEntity, TableUpdateMode.Replace);
     }
 }

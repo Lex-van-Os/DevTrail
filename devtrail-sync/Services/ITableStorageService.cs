@@ -4,6 +4,6 @@ namespace devtrail_sync.Services;
 
 public interface ITableStorageService
 {
-    Task<int> UpsertRepositoryData(RepositoryEntity repositoryEntity);
-    Task<int> UpsertSolvedChallengeData(SolvedChallengeEntity solvedChallengeEntity);
+    Task UpsertRepositoryData(RepositoryEntity repositoryEntity);
+    Task UpsertSolvedChallengeData(SolvedChallengeEntity solvedChallengeEntity);
 }

@@ -45,13 +45,6 @@ public class DevTrailSync
                 RepositorySnapshot repositorySnapshot =
                     await _gitHubSyncService.GetRepositorySnapshotAsync(owner, name);
 
-                _logger.LogInformation("{Repo} description: {Description}", repositorySnapshot.Name,
-                    repositorySnapshot.Description);
-                _logger.LogInformation("{Repo} languages: {Languages}", repositorySnapshot.Name,
-                    string.Join(", ", repositorySnapshot.Languages));
-                _logger.LogInformation("{Repo} last commit: {LastCommitDate}", repositorySnapshot.Name,
-                    repositorySnapshot.LastCommitDate);
-
                 RepositoryEntity repositoryEntity = _repositoryMapper.Map(repositorySnapshot);
                 await _tableStorageService.UpsertRepositoryData(repositoryEntity);
 
@@ -60,17 +53,8 @@ public class DevTrailSync
                     List<SolvedChallengesSnapshot> solvedChallengesSnapshots =
                         await _gitHubSyncService.GetSolvedChallengesSnapshotAsync(owner, name);
 
-                    _logger.LogInformation("{Repo} solved challenges:", repositorySnapshot.Name);
-
                     foreach (SolvedChallengesSnapshot snapshot in solvedChallengesSnapshots)
                     {
-                        _logger.LogInformation("{Repo} language: {Language}", repositorySnapshot.Name,
-                            snapshot.Language);
-
-                        _logger.LogInformation("{Language} solved challenges: {SolvedChallenges}",
-                            snapshot.Language,
-                            snapshot.SolvedChallenges);
-
                         SolvedChallengeEntity solvedChallengeEntity = _solvedChallengeMapper.Map(snapshot, name);
                         await _tableStorageService.UpsertSolvedChallengeData(solvedChallengeEntity);
                     }
