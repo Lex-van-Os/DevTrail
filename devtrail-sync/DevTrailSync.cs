@@ -1,4 +1,4 @@
-using devtrail_sync.Models;
+using devtrail_sync.Models.GitHub;
 using devtrail_sync.Services;
 
 using Microsoft.Azure.Functions.Worker;
