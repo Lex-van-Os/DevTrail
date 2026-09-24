@@ -1,6 +1,8 @@
 using Azure.Data.Tables;
 using Azure.Monitor.OpenTelemetry.Exporter;
 
+using devtrail_core.Services;
+
 using devtrail_sync.Mappers;
 using devtrail_sync.Services;
 

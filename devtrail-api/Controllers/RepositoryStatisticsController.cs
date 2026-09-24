@@ -1,3 +1,5 @@
+using Azure.Data.Tables;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace devtrail_api.Controllers;
@@ -7,13 +9,16 @@ namespace devtrail_api.Controllers;
 [ApiController]
 public class RepositoryStatisticsController : ControllerBase
 {
-    public RepositoryStatisticsController()
+    private readonly TableServiceClient _tableServiceClient;
+
+    public RepositoryStatisticsController(TableServiceClient tableServiceClient)
     {
-        
+        _tableServiceClient = tableServiceClient;
     }
 
     public async Task<IActionResult> Get()
     {
+        
         return Ok();
     }
 }

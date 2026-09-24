@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="devtrail-api.Tests/devtrail-api.Tests.csproj" />
   <Project Path="devtrail-api/devtrail-api.csproj" />
+  <Project Path="devtrail-core/devtrail-core.csproj" />
   <Project Path="devtrail-sync/devtrail-sync.csproj" />
 </Solution>

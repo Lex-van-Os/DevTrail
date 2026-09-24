@@ -1,8 +1,8 @@
 using Azure.Data.Tables;
 
-using devtrail_sync.Models.TableEntities;
+using devtrail_core.Models.TableEntities;
 
-namespace devtrail_sync.Services;
+namespace devtrail_core.Services;
 
 public class TableStorageService : ITableStorageService
 {
