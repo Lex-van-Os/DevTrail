@@ -28,4 +28,25 @@ public class TableStorageService : ITableStorageService
 
         await table.UpsertEntityAsync(solvedChallengeEntity, TableUpdateMode.Replace);
     }
+
+    public async Task<List<RepositoryEntity>> GetRepositoryData()
+    {
+        TableClient table = _tableServiceClient.GetTableClient("Repositories");
+        await table.CreateIfNotExistsAsync();
+
+        List<RepositoryEntity> repositoryData = await table.QueryAsync<RepositoryEntity>().ToListAsync();
+
+        return repositoryData;
+    }
+
+    public async Task<List<SolvedChallengeEntity>> GetSolvedChallengeData()
+    {
+        TableClient table = _tableServiceClient.GetTableClient("SolvedChallenges");
+        await table.CreateIfNotExistsAsync();
+
+        List<SolvedChallengeEntity> solvedChallengeData = await
+            table.QueryAsync<SolvedChallengeEntity>().ToListAsync();
+
+        return solvedChallengeData;
+    }
 }

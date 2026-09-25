@@ -1,0 +1,7 @@
+$kind: http-request
+name: Get Repository Statistics
+order: 1000
+url: "{{baseUrl}}/api/repositoryStatistics"
+method: GET
+headers:
+  Accept: application/json

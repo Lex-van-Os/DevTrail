@@ -1,4 +1,8 @@
-using Azure.Data.Tables;
+using devtrail_api.Mappers;
+using devtrail_api.Models;
+
+using devtrail_core.Models.TableEntities;
+using devtrail_core.Services;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,16 +13,28 @@ namespace devtrail_api.Controllers;
 [ApiController]
 public class RepositoryStatisticsController : ControllerBase
 {
-    private readonly TableServiceClient _tableServiceClient;
+    private readonly IRepositoryStatisticsMapper _repositoryStatisticsMapper;
+    private readonly ITableStorageService _tableStorageService;
 
-    public RepositoryStatisticsController(TableServiceClient tableServiceClient)
+    public RepositoryStatisticsController(ITableStorageService tableStorageService,
+        IRepositoryStatisticsMapper repositoryStatisticsMapper)
     {
-        _tableServiceClient = tableServiceClient;
+        _tableStorageService = tableStorageService;
+        _repositoryStatisticsMapper = repositoryStatisticsMapper;
     }
 
+    [EndpointName("GetRepositoryStatistics")]
+    [EndpointSummary("Retrieves repository statistics.")]
+    [HttpGet("repositoryStatistics")]
     public async Task<IActionResult> Get()
     {
-        
-        return Ok();
+        List<RepositoryEntity> repositoryEntities = await _tableStorageService.GetRepositoryData();
+
+        List<SolvedChallengeEntity> solvedChallengeEntities = await _tableStorageService.GetSolvedChallengeData();
+
+        List<RepositoryStatisticsResponse> response =
+            _repositoryStatisticsMapper.Map(repositoryEntities, solvedChallengeEntities);
+
+        return Ok(response);
     }
 }
