@@ -13,13 +13,15 @@ services:
   devtrail-api:
     container_name: devtrail-api
     build:
-      context: ./devtrail-api
+      context: .
+      dockerfile: devtrail-api/Dockerfile
     ports:
       - "8080:8080"
     environment:
       # Well-known Azurite emulator account/key (public, not a secret) — see
       # https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite
       ConnectionStrings__TableStorage: "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;TableEndpoint=http://azurite:10002/devstoreaccount1;"
+      ASPNETCORE_ENVIRONMENT: Development
     depends_on:
       - azurite
 

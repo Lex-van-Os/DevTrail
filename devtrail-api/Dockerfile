@@ -1,9 +1,15 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0.400 AS build
 WORKDIR /src
-COPY devtrail-api.csproj .
-RUN dotnet restore
-COPY . .
-RUN dotnet publish -c Release -o /app/publish
+
+COPY devtrail-api/devtrail-api.csproj devtrail-api/
+COPY devtrail-core/devtrail-core.csproj devtrail-core/
+
+RUN dotnet restore devtrail-api/devtrail-api.csproj
+
+COPY devtrail-api/ devtrail-api/
+COPY devtrail-core/ devtrail-core/
+
+RUN dotnet publish devtrail-api/devtrail-api.csproj -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0.11 AS final
 WORKDIR /app

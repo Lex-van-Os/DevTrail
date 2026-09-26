@@ -1,6 +1,8 @@
+using devtrail_core.Models.TableEntities;
+using devtrail_core.Services;
+
 using devtrail_sync.Mappers;
 using devtrail_sync.Models.GitHub;
-using devtrail_sync.Models.TableEntities;
 using devtrail_sync.Services;
 
 using Microsoft.Azure.Functions.Worker;
