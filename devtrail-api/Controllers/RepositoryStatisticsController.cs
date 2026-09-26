@@ -1,3 +1,5 @@
+using Azure;
+
 using devtrail_api.Mappers;
 using devtrail_api.Models;
 
@@ -28,9 +30,21 @@ public class RepositoryStatisticsController : ControllerBase
     [HttpGet("repositoryStatistics")]
     public async Task<IActionResult> Get()
     {
-        List<RepositoryEntity> repositoryEntities = await _tableStorageService.GetRepositoryData();
+        List<RepositoryEntity> repositoryEntities;
+        List<SolvedChallengeEntity> solvedChallengeEntities;
 
-        List<SolvedChallengeEntity> solvedChallengeEntities = await _tableStorageService.GetSolvedChallengeData();
+        try
+        {
+            repositoryEntities = await _tableStorageService.GetRepositoryData();
+            solvedChallengeEntities = await _tableStorageService.GetSolvedChallengeData();
+        }
+        catch (RequestFailedException requestFailedException)
+        {
+            return Problem(
+                title: "Repository data is temporarily unavailable.",
+                detail: requestFailedException.Message,
+                statusCode: StatusCodes.Status503ServiceUnavailable);
+        }
 
         List<RepositoryStatisticsResponse> response =
             _repositoryStatisticsMapper.Map(repositoryEntities, solvedChallengeEntities);
