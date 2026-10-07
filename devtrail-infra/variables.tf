@@ -1,1 +1,5 @@
-// WIP: Will contain definitions once Azure Storage resource(s) are defined through the Terraform main.tf file
+variable "budget_email" {
+  type        = string
+  description = "The email address that is used for budget alerts"
+  default     = "example@test.nl"
+}

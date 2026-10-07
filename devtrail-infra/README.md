@@ -25,6 +25,7 @@ terraform init
 ```bash
 terraform plan             # preview changes
 terraform apply            # apply changes
+terraform destroy          # deletes created resources
 terraform fmt               # format .tf files
 terraform fmt -check        # check formatting without changing files (what CI runs)
 terraform validate          # check config validity (what CI runs)
