@@ -9,3 +9,6 @@ obj/
 
 # macOS
 .DS_Store
+
+# Claude Vibe Wise plugin
+.vibe-wise/
