@@ -48,6 +48,38 @@ resource "azurerm_storage_table" "solvedChallenges" {
   storage_account_id = azurerm_storage_account.devtrail-sync-func-storage-dev.id
 }
 
+resource "azurerm_storage_container" "devtrailSyncBuild" {
+  name                  = "devtrailSyncBuild"
+  storage_account_id    = azurerm_storage_account.devtrail-sync-func-storage-dev.id
+}
+
+resource "azurerm_service_plan" "devtrail-sync-plan" {
+  name                = "devtrail-sync-plan"
+  location            = azurerm_resource_group.devtrail-sync-func-dev_group.location
+  resource_group_name = azurerm_resource_group.devtrail-sync-func-dev_group.name
+  os_type             = "Linux"
+  sku_name            = "FC1"
+}
+
+
+resource "azurerm_function_app_flex_consumption" "devtrail-sync-app" {
+  name                = "devtrail-sync-app"
+  resource_group_name = azurerm_resource_group.devtrail-sync-func-dev_group.name
+  location            = azurerm_resource_group.devtrail-sync-func-dev_group.location
+  service_plan_id     = azurerm_service_plan.devtrail-sync-plan.id
+
+  storage_container_type      = "blobContainer"
+  storage_container_endpoint  = "${azurerm_storage_account.devtrail-sync-func-storage-dev.primary_blob_endpoint}${azurerm_storage_container.devtrailSyncBuild.name}"
+  storage_authentication_type = "StorageAccountConnectionString"
+  storage_access_key          = azurerm_storage_account.devtrail-sync-func-storage-dev.primary_access_key
+  runtime_name                = "dotnet-isolated"
+  runtime_version             = "10.0"
+  maximum_instance_count      = 2
+  instance_memory_in_mb       = 512
+
+  site_config {}
+}
+
 resource "azurerm_container_registry" "devtrail-container-registry-dev" {
   name                = "devtrailregistrydev"
   resource_group_name = azurerm_resource_group.devtrail-sync-func-dev_group.name
@@ -56,43 +88,43 @@ resource "azurerm_container_registry" "devtrail-container-registry-dev" {
   admin_enabled       = true
 }
 
-resource "azurerm_container_app_environment" "devtrail-container-environment-dev" {
-  name                       = "devtrail-container-environment-dev"
-  location                   = azurerm_resource_group.devtrail-sync-func-dev_group.location
-  resource_group_name        = azurerm_resource_group.devtrail-sync-func-dev_group.name
-}
+# resource "azurerm_container_app_environment" "devtrail-container-environment-dev" {
+#   name                       = "devtrail-container-environment-dev"
+#   location                   = azurerm_resource_group.devtrail-sync-func-dev_group.location
+#   resource_group_name        = azurerm_resource_group.devtrail-sync-func-dev_group.name
+# }
 
-resource "azurerm_container_app" "devtrail-web-dev" {
-  name                         = "devtrail-web-dev"
-  container_app_environment_id = azurerm_container_app_environment.devtrail-container-environment-dev.id
-  resource_group_name          = azurerm_resource_group.devtrail-sync-func-dev_group.name
-  revision_mode                = "Single"
+# resource "azurerm_container_app" "devtrail-web-dev" {
+#   name                         = "devtrail-web-dev"
+#   container_app_environment_id = azurerm_container_app_environment.devtrail-container-environment-dev.id
+#   resource_group_name          = azurerm_resource_group.devtrail-sync-func-dev_group.name
+#   revision_mode                = "Single"
 
-  template {
-    container {
-      name   = "devtrail-web-dev"
-      image  = "mcr.microsoft.com/k8se/quickstart:latest"
-      cpu    = 0.25
-      memory = "0.5Gi"
-    }
-  }
-}
+#   template {
+#     container {
+#       name   = "devtrail-web-dev"
+#       image  = "mcr.microsoft.com/k8se/quickstart:latest"
+#       cpu    = 0.25
+#       memory = "0.5Gi"
+#     }
+#   }
+# }
 
-resource "azurerm_container_app" "devtrail-api-dev" {
-  name                         = "devtrail-api-dev"
-  container_app_environment_id = azurerm_container_app_environment.devtrail-container-environment-dev.id
-  resource_group_name          = azurerm_resource_group.devtrail-sync-func-dev_group.name
-  revision_mode                = "Single"
+# resource "azurerm_container_app" "devtrail-api-dev" {
+#   name                         = "devtrail-api-dev"
+#   container_app_environment_id = azurerm_container_app_environment.devtrail-container-environment-dev.id
+#   resource_group_name          = azurerm_resource_group.devtrail-sync-func-dev_group.name
+#   revision_mode                = "Single"
 
-  template {
-    container {
-      name   = "devtrail-api-dev"
-      image  = "mcr.microsoft.com/k8se/quickstart:latest"
-      cpu    = 0.25
-      memory = "0.5Gi"
-    }
-  }
-}
+#   template {
+#     container {
+#       name   = "devtrail-api-dev"
+#       image  = "mcr.microsoft.com/k8se/quickstart:latest"
+#       cpu    = 0.25
+#       memory = "0.5Gi"
+#     }
+#   }
+# }
 
 data "azurerm_client_config" "devtrail-config" {}
 
