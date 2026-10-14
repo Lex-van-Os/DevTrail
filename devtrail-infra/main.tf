@@ -49,7 +49,7 @@ resource "azurerm_storage_table" "solvedChallenges" {
 }
 
 resource "azurerm_storage_container" "devtrailSyncBuild" {
-  name                  = "devtrailSyncBuild"
+  name                  = "devtrail-sync-build"
   storage_account_id    = azurerm_storage_account.devtrail-sync-func-storage-dev.id
 }
 
@@ -70,12 +70,16 @@ resource "azurerm_function_app_flex_consumption" "devtrail-sync-app" {
 
   storage_container_type      = "blobContainer"
   storage_container_endpoint  = "${azurerm_storage_account.devtrail-sync-func-storage-dev.primary_blob_endpoint}${azurerm_storage_container.devtrailSyncBuild.name}"
-  storage_authentication_type = "StorageAccountConnectionString"
+  storage_authentication_type = "SystemAssignedIdentity"
   storage_access_key          = azurerm_storage_account.devtrail-sync-func-storage-dev.primary_access_key
   runtime_name                = "dotnet-isolated"
   runtime_version             = "10.0"
   maximum_instance_count      = 2
   instance_memory_in_mb       = 512
+
+  identity {
+    type = "SystemAssigned"
+  }
 
   site_config {}
 }
@@ -108,6 +112,10 @@ resource "azurerm_container_registry" "devtrail-container-registry-dev" {
 #       memory = "0.5Gi"
 #     }
 #   }
+
+#   identity {
+#     type = "SystemAssigned"
+#   }
 # }
 
 # resource "azurerm_container_app" "devtrail-api-dev" {
@@ -124,6 +132,28 @@ resource "azurerm_container_registry" "devtrail-container-registry-dev" {
 #       memory = "0.5Gi"
 #     }
 #   }
+
+#   identity {
+#     type = "SystemAssigned"
+#   }
+# }
+
+# resource "azurerm_role_assignment" "devtrail-api-cache-table-contributor" {
+#   scope                = azurerm_storage_account.devtrail-sync-func-storage-dev.id
+#   role_definition_name = "Storage Table Data Contributor"
+#   principal_id         = azurerm_container_app.devtrail-api-dev.identity[0].principal_id
+# }
+
+# resource "azurerm_role_assignment" "devtrail-api-acr-pull" {
+#   scope                = azurerm_container_registry.devtrail-container-registry-dev.id
+#   role_definition_name = "AcrPull"
+#   principal_id         = azurerm_container_app.devtrail-api-dev.identity[0].principal_id
+# }
+
+# resource "azurerm_role_assignment" "devtrail-web-acr-pull" {
+#   scope                = azurerm_container_registry.devtrail-container-registry-dev.id
+#   role_definition_name = "AcrPull"
+#   principal_id         = azurerm_container_app.devtrail-web-dev.identity[0].principal_id
 # }
 
 data "azurerm_client_config" "devtrail-config" {}
@@ -132,30 +162,37 @@ resource "azurerm_key_vault" "devtrail-key_vault" {
   name                        = "devtrail-key-vault"
   location                    = azurerm_resource_group.devtrail-sync-func-dev_group.location
   resource_group_name         = azurerm_resource_group.devtrail-sync-func-dev_group.name
-  rbac_authorization_enabled  = false
+  rbac_authorization_enabled  = true
   enabled_for_disk_encryption = true
   tenant_id                   = data.azurerm_client_config.devtrail-config.tenant_id
   soft_delete_retention_days  = 7
   purge_protection_enabled    = false
 
   sku_name = "standard"
+}
 
-  access_policy {
-    tenant_id = data.azurerm_client_config.devtrail-config.tenant_id
-    object_id = data.azurerm_client_config.devtrail-config.object_id
+resource "azurerm_role_assignment" "devtrail-deployer-key-vault-secrets-user" {
+  scope                = azurerm_key_vault.devtrail-key_vault.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = data.azurerm_client_config.devtrail-config.object_id
+}
 
-    key_permissions = [
-      "Get",
-    ]
+resource "azurerm_role_assignment" "devtrail-sync-key-vault-secrets-user" {
+  scope                = azurerm_key_vault.devtrail-key_vault.id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_function_app_flex_consumption.devtrail-sync-app.identity[0].principal_id
+}
 
-    secret_permissions = [
-      "Get",
-    ]
+resource "azurerm_role_assignment" "devtrail-sync-deployment-blob-owner" {
+  scope                = azurerm_storage_account.devtrail-sync-func-storage-dev.id
+  role_definition_name = "Storage Blob Data Owner"
+  principal_id         = azurerm_function_app_flex_consumption.devtrail-sync-app.identity[0].principal_id
+}
 
-    storage_permissions = [
-      "Get",
-    ]
-  }
+resource "azurerm_role_assignment" "devtrail-sync-cache-table-contributor" {
+  scope                = azurerm_storage_account.devtrail-sync-func-storage-dev.id
+  role_definition_name = "Storage Table Data Contributor"
+  principal_id         = azurerm_function_app_flex_consumption.devtrail-sync-app.identity[0].principal_id
 }
 
 resource "azurerm_application_insights" "devtrail-appinsights" {
@@ -216,3 +253,15 @@ resource "azurerm_consumption_budget_subscription" "devtrail-budget-plan" {
     ]
   }
 }
+
+# TODO: Add managed identities for:
+
+# 1. System assigned identity for Function app
+# - Blob access -> Deployment storage account
+# - Table access -> Cache storage account
+# - Secret read -> Key Vault
+# 2. System assigned identity for API container app
+# - Image pull -> ACR
+# - Table access -> Cache storage account
+# 3. System assigned identity for Web container app
+# - Image pull -> ACR
