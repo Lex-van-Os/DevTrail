@@ -33,6 +33,7 @@ format.
 | [0006](adr/0006-rest-first-github-api-consumption.md) | Use REST for GitHub API Consumption, GraphQL Only for contributionsCollection | accepted | 2026-09-03 |
 | [0007](adr/0007-docker-as-deployment-unit-for-api-and-web.md) | Use Docker Images as the Deployment Unit for the API and Web | accepted | 2026-09-03 |
 | [0008](adr/0008-use-azure-table-storage-for-cached-data.md) | Use Azure Table Storage for Cached Portfolio Data | accepted | 2026-09-08 |
+| [0009](adr/0009-use-managed-identities-for-azure-resource-access.md) | Use System-Assigned Managed Identities for Access Between Azure Resources | proposed | 2026-10-13 |
 
 ## Planned (from [`docs/roadmap.md`](../roadmap.md), not yet written)
 

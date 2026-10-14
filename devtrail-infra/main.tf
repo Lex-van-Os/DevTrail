@@ -178,10 +178,9 @@ resource "azurerm_consumption_budget_subscription" "devtrail-budget-plan" {
   amount     = 10
   time_grain = "Monthly"
 
-# Automatically calculate budget start date (current date) and end date (current date + 10 years)
   time_period {
-    start_date = formatdate("YYYY-MM-01'T'00:00:00Z", timestamp())
-    end_date   = formatdate("YYYY-MM-01'T'00:00:00Z", timeadd(timestamp(), "87600h"))
+    start_date = "2026-10-01T00:00:00Z"
+    end_date   = "2030-10-01T00:00:00Z"
   }
 
   notification {
